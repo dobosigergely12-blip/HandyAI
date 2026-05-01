@@ -27,7 +27,10 @@ jobs:
 
       - name: EXE létrehozása
         run: |
-          pyinstaller --onefile --windowed --name HandyAI handy_ai.py
+          pyinstaller --onefile --windowed --name HandyAI ^
+          --collect-all mediapipe ^
+          --hidden-import=mediapipe.python.solutions ^
+          handy_ai.py
 
       - name: EXE feltöltése
         uses: actions/upload-artifact@v4
