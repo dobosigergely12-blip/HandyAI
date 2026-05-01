@@ -1,0 +1,35 @@
+name: Build Handy AI EXE
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Repository letöltése
+        uses: actions/checkout@v4
+
+      - name: Python telepítése
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Függőségek telepítése
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller mediapipe opencv-python pyautogui numpy
+
+      - name: EXE létrehozása
+        run: |
+          pyinstaller --onefile --windowed --name HandyAI handy_ai.py
+
+      - name: EXE feltöltése
+        uses: actions/upload-artifact@v4
+        with:
+          name: HandyAI-Windows
+          path: dist/HandyAI.exe
